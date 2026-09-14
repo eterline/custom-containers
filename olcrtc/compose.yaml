@@ -1,0 +1,16 @@
+services:
+  olcrtc-server:
+    image: olcrtc-cntnr:latest
+    command: ["server.yaml"]
+    volumes:
+      - ./olcrtc-data:/olcrtc:ro
+    restart: unless-stopped
+
+  olcrtc-client:
+    image: olcrtc-cntnr:latest
+    command: ["client.yaml"]
+    volumes:
+      - ./olcrtc-data:/olcrtc:ro
+    ports:
+      - "1080:1080"
+    restart: unless-stopped

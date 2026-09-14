@@ -1,0 +1,13 @@
+mode: cnc
+auth:
+  provider: jitsi
+room:
+  id: "https://REPLACE_ME_WITH_HOST/REPLACE_ME_WITH_ROOM_ID"
+crypto:
+  key: "REPLACE_ME_WITH_64_HEX_CHARS"
+net:
+  transport: datachannel
+  dns: "8.8.8.8:53"
+socks:
+  host: "127.0.0.1"
+  port: 1080

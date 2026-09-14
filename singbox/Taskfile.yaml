@@ -1,0 +1,19 @@
+version: "3"
+
+vars:
+  DOCKER_IMAGE_URL: "registry.eterline.ru/singbox"
+  SINGBOX_VERSION: v1.14.0
+  GO_FLAGS: "-s -w"
+  SINGBOX_TAGS: "with_wireguard with_grpc with_clash_api with_v2ray_api with_quic with_naive_outbound with_purego"
+
+tasks:
+  build-docker:
+    cmds:
+      - |
+        docker buildx build \
+        --build-arg SINGBOX_VERSION="{{.SINGBOX_VERSION}}" \
+        --build-arg GO_FLAGS="{{.GO_FLAGS}}" \
+        --build-arg SINGBOX_TAGS="{{.SINGBOX_TAGS}}" \
+        --load \
+        -t {{.DOCKER_IMAGE_URL}}:{{.SINGBOX_VERSION}}-$(date +%s) \
+        -t {{.DOCKER_IMAGE_URL}}:latest .

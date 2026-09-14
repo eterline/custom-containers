@@ -1,0 +1,19 @@
+version: "3"
+
+vars:
+  OLCRTC_REPOSITORY: "https://github.com/openlibrecommunity/olcrtc.git"
+  COMMIT_HASH: "189d16c"
+  DOCKER_IMAGE_URL: "registry.eterline.ru/olcrtc"
+
+tasks:
+  clone-repository:
+    cmds:
+      - rm -rf olcrtc || true
+      - git clone {{.OLCRTC_REPOSITORY}}
+
+  build-docker:
+    cmds:
+      - |
+        docker buildx build \
+        -t {{.DOCKER_IMAGE_URL}}:$(date +%s) \
+        -t {{.DOCKER_IMAGE_URL}}:latest .

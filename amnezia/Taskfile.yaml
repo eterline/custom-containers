@@ -1,0 +1,30 @@
+version: "3"
+
+vars:
+  AMNEZIA_REPOSITORY: "https://github.com/amnezia-vpn/amneziawg-go.git"
+  COMMIT_HASH: "b5928ef"
+  DOCKER_IMAGE_URL: "registry.eterline.ru/amnezia"
+  TAG:
+    sh: date +%s
+
+tasks:
+  clone-repository:
+    cmds:
+      - rm -rf amneziawg-go || true
+      - git clone {{.AMNEZIA_REPOSITORY}}
+
+  build-base-docker:
+    cmds:
+      - |
+        cd ./amneziawg-go && \
+        docker buildx build \
+        -t {{.DOCKER_IMAGE_URL}}-base:{{.TAG}} \
+        -t {{.DOCKER_IMAGE_URL}}-base:latest .
+
+  build-docker:
+    cmds:
+      - task: "build-base-docker"
+      - |
+        docker buildx build \
+        -t {{.DOCKER_IMAGE_URL}}:{{.TAG}} \
+        -t {{.DOCKER_IMAGE_URL}}:latest .
