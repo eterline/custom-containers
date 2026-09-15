@@ -26,7 +26,12 @@ tasks:
           | while read -r image; do
               name=$(echo "$image" | tr '/:' '_')
               docker save "$image" -o "./images/${name}.tar"
+              s3cli --insecure \
+                -e "$S3CLI_HOST" --ak "$S3CLI_ID" --sk "$S3CLI_SECRET" \
+                upload custom-docker-images ./images/${name}.tar && \
+                echo "Docker image: $image - uploaded to S3"
             done
+      - rm -rf ./images || true
 
   push-images:
     vars:
